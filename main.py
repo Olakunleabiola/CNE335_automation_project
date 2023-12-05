@@ -11,13 +11,13 @@ class Server:
     def ping(self):
         try:
 
-            result = subprocess.run(['ping', '-c', '4', self.ip_address], capture_output=True, text=True, check=True)  # Run the ping command and capture the output
+            result = subprocess.run(['ping', '-n', '4', self.ip_address], capture_output=True, text=True, check=True)  # Run the ping command and capture the output
             return result.stdout
         except subprocess.CalledProcessError as e:
             return f"Error: {e}"
 
 def print_program_info():
-    print("Server Automator v0.1 by Your Name")
+    print("Server Automator v0.1 by olakunleabiola")
 
 # This is the entry point to our program
 if __name__ == '__main__':
