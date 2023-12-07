@@ -8,7 +8,7 @@ def upgrade_ubuntu_ssh(ip_address, username, private_key_path):
 
     try:
         # Load the private key
-        private_key = paramiko.RSAKey(filename=r"C:\Users\olakunlea\.SSH\OlakunleAbiola_keypair.pem")
+        private_key = paramiko.RSAKey(filename=private_key_path)
 
         # Connect to the remote server using key-based authentication
         client.connect(ip_address, username=username, pkey=private_key)
