@@ -1,39 +1,40 @@
-# oLakunleabiola
-# CNE 335 Fall
+import paramiko
 
-import os
+def upgrade_ubuntu_ssh(ip_address, username, private_key_path):
+    # Create an SSH client
+    client = paramiko.SSHClient()
 
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-class Server:
-    """ Server class for representing and manipulating servers. """
+    try:
+        # Load the private key
+        private_key = paramiko.RSAKey(filename=r"C:\Users\olakunlea\.SSH\OlakunleAbiola_keypair.pem")
 
-    def __init__(self, server_ip):
-        self.server_ip = server_ip
+        # Connect to the remote server using key-based authentication
+        client.connect(ip_address, username=username, pkey=private_key)
 
-    def ping(self):
-        try:
+        # Run the upgrade command
+        command = "sudo apt update && sudo apt upgrade -y"
+        stdin, stdout, stderr = client.exec_command(command)
 
-            response = os.system(f"ping -n 4 {self.server_ip}")  # Use os module to ping the server
-            if response == 0:
-                return f"Server {self.server_ip} is reachable."
-            else:
-                return f"Server {self.server_ip} is unreachable."
-        except Exception as e:
-            return f"Error while pinging the server: {str(e)}"
+        # Print the output of the command
+        print("Output:")
+        print(stdout.read().decode())
 
+        # Print any errors
+        if stderr:
+            print("Errors:")
+            print(stderr.read().decode())
 
-def print_program_info():
-    print("Server Automator v0.1 by Olakunleabiola")
+        print("Upgrade completed successfully!")
 
+    except Exception as e:
+        print(f"Error: {e}")
+    finally:
+        # Close the SSH connection
+        client.close()
 
-# This is the entry point to our program
-if __name__ == '__main__':
-    print_program_info()
-
-
-    server_ip = "34.221.172.36"    # Create a Server object
-    server = Server(server_ip)
-
-
-    result = server.ping()  # Call Ping method and print the results
-    print(result)
+ip_address = "34.221.172.36"
+username = "ubuntu"
+private_key_path = r"C:\Users\olakunlea\.SSH\OlakunleAbiola_keypair.pem"
+upgrade_ubuntu_ssh(ip_address, username, private_key_path)
